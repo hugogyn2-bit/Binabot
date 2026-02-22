@@ -1,0 +1,14 @@
+[Unit]
+Description=Binance Quant MR Bot
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/binance-quant-mr-bot
+EnvironmentFile=/home/ubuntu/binance-quant-mr-bot/.env
+ExecStart=/home/ubuntu/botenv/bin/python /home/ubuntu/binance-quant-mr-bot/main.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

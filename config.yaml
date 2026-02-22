@@ -1,0 +1,58 @@
+exchange:
+  base_url: "https://fapi.binance.com"
+  ws_base: "wss://fstream.binance.com/ws"
+  recv_window: 5000
+
+universe:
+  quote: "USDT"
+  contract_type: "PERPETUAL"
+  min_quote_volume_usdt: 30000000     # 30M
+  max_spread_bps: 10                  # 0.10%
+  max_symbols_scan: 250               # cap per cycle to limit REST load (set 0 for no cap)
+
+trading:
+  timeframe: "15m"
+  lookback_klines: 400
+  isolated: true
+  leverage: 3
+  max_positions: 4
+  one_way_mode: true
+
+risk:
+  reserve_cash_pct: 0.20              # keep 20% as buffer
+  risk_per_trade_pct: 0.005           # 0.5% of equity per trade
+  daily_loss_limit_pct: 0.03          # 3% daily loss stop
+  loss_streak_pause_count: 3
+  loss_streak_pause_minutes: 60
+
+regime:
+  window: 96                          # ~24h on 15m
+  range_max_abs_ema_slope: 0.0008
+  range_max_directionality: 0.55
+
+strategy:
+  z_window: 96
+  entry_z: 2.0
+  exit_z_partial: 0.5
+  exit_z_full: 0.1
+  stop_z: 3.0
+
+ws:
+  public_streams:
+    - "!bookTicker"
+  reconnect_backoff_sec: 5
+
+execution:
+  maker_reprice_seconds: 6
+  maker_price_bps: 2
+  max_reprices: 3
+  entry_timeout_seconds: 20
+  use_mark_price_triggers: true
+  sl_atr_mult: 1.2
+  atr_window: 14
+
+selector:
+  cooldown_candles: 8                 # do not re-enter same symbol for N candles after any fill
+  corr_window: 96
+  corr_penalty_threshold: 0.75
+  corr_penalty_factor: 0.50           # multiply score by this if corr too high
