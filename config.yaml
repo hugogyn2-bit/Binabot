@@ -1,58 +1,37 @@
-exchange:
-  base_url: "https://fapi.binance.com"
-  ws_base: "wss://fstream.binance.com/ws"
-  recv_window: 5000
+account:
+  equity_usd: 22.78
 
-universe:
-  quote: "USDT"
-  contract_type: "PERPETUAL"
-  min_quote_volume_usdt: 30000000     # 30M
-  max_spread_bps: 10                  # 0.10%
-  max_symbols_scan: 250               # cap per cycle to limit REST load (set 0 for no cap)
-
-trading:
-  timeframe: "15m"
-  lookback_klines: 400
-  isolated: true
-  leverage: 3
-  max_positions: 4
-  one_way_mode: true
-
-risk:
-  reserve_cash_pct: 0.20              # keep 20% as buffer
-  risk_per_trade_pct: 0.005           # 0.5% of equity per trade
-  daily_loss_limit_pct: 0.03          # 3% daily loss stop
-  loss_streak_pause_count: 3
-  loss_streak_pause_minutes: 60
-
-regime:
-  window: 96                          # ~24h on 15m
-  range_max_abs_ema_slope: 0.0008
-  range_max_directionality: 0.55
-
-strategy:
-  z_window: 96
-  entry_z: 2.0
-  exit_z_partial: 0.5
-  exit_z_full: 0.1
-  stop_z: 3.0
-
-ws:
-  public_streams:
-    - "!bookTicker"
-  reconnect_backoff_sec: 5
+data:
+  timeframe: "1m"
+  lookback: 200
+  atr_period: 14
 
 execution:
-  maker_reprice_seconds: 6
-  maker_price_bps: 2
-  max_reprices: 3
-  entry_timeout_seconds: 20
-  use_mark_price_triggers: true
-  sl_atr_mult: 1.2
-  atr_window: 14
+  cooldown_seconds: 900   # 15 min
 
-selector:
-  cooldown_candles: 8                 # do not re-enter same symbol for N candles after any fill
-  corr_window: 96
-  corr_penalty_threshold: 0.75
-  corr_penalty_factor: 0.50           # multiply score by this if corr too high
+entries:
+  sl_atr_mult: 2.0
+
+risk:
+  risk_per_trade_pct: 0.01
+  max_exposure_pct: 0.30
+  max_trades_per_day: 20
+  max_loss_streak: 5
+
+  fee_rate: 0.0004
+  slippage_rate: 0.0002
+
+  tp1_qty_pct: 0.5
+  tp1_r_multiple: 1.0
+  breakeven_after_tp1: true
+
+  trailing_enabled: true
+  trailing_start_r: 1.2
+  trailing_atr_mult: 1.0
+
+strategy:
+  entry_z: 2.5
+  exit_z_partial: 0.8
+  exit_z_full: 0.2
+  min_atr_pct: 0.001
+  allow_shorts: true
